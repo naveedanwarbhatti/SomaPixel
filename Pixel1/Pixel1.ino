@@ -15,20 +15,15 @@ int currentPosition  = -99999; //   intializing it with random negative value
 int correction = 0;
 
 void setup() {
-
-
   pinMode(Pressure, INPUT); //Pressure Sensor
   pinMode(relay1, OUTPUT); //Initiates Motor Channel A pin
   pinMode(relay2, OUTPUT); //Initiates Brake Channel A pin
   Serial.begin(9600);
   correction = EEPROMReadInt(0); // reading the last position of motor from EEPROM to later caliberate HallEffect sensor values
-
-
 }
 
 void loop() {
-
-
+  
   if (oldPressure > 19 &&  currentPosition > level )
   {
     retractActuator();
@@ -46,8 +41,6 @@ void loop() {
 
   }
 
-
-
   long newPressure = analogRead(Pressure) / 10; //checking if the pressure has changed
 
   if (newPressure != oldPressure) {
@@ -56,7 +49,6 @@ void loop() {
     Inverse_PWM = map(newPressure, 99, 3, 0, 255);  // speed for extraction
     level = map(newPressure, 10, 99, 6300, 0);
   }
-
 
   long newPosition = myEnc.read();  //check the encoder to see if the position has changed
   if (newPosition != oldPosition) {
@@ -68,7 +60,6 @@ void loop() {
 
   char c = newPressure;
   Serial.write(c); // sending pressure value through Xbee
-
 
 }
 
