@@ -33,8 +33,6 @@ void setup() //---3 Pins being used are outputs---
 void loop()
 {
 
-
-
   if (oldPressure > 19 &&  currentPosition > level )
   {
     retractActuator();
@@ -50,10 +48,7 @@ void loop()
       Stop();
     }
 
-
   }
-
-
 
 
   if (Serial.available() > 0) {      //checking if any data is available from Xbee
@@ -61,21 +56,14 @@ void loop()
 
     if (value > 0 && value < 100)
       newPressure = value / 1.5;
-
   }
-
 
   if (newPressure != oldPressure) {
     oldPressure = newPressure;
-    //Serial.println(newPressure);
     PWM = map(newPressure, 20, 99, 0, 255);   // speed for retraction
     Inverse_PWM = map(newPressure, 99, 3, 0, 255);   // speed for extraction
     level = map(newPressure, 3, 99, 6500, 0);
-    //Serial.println(level);
-
-
   }
-
 
   long newPosition = myEnc.read();  //checking the encoder to see if the position has changed
   if (newPosition != oldPosition) {
@@ -93,7 +81,6 @@ void extendActuator()
   analogWrite(9, Inverse_PWM);
   digitalWrite(11, LOW); // Drives LOW outputs down first to avoid damage
   digitalWrite(8, HIGH);
-
 }
 
 void retractActuator()
@@ -114,7 +101,6 @@ void EEPROMWriteInt(int address, int value)
 {
   byte two = (value & 0xFF);
   byte one = ((value >> 8) & 0xFF);
-
   EEPROM.update(address, two);
   EEPROM.update(address + 1, one);
 }
@@ -123,6 +109,5 @@ int EEPROMReadInt(int address)
 {
   long two = EEPROM.read(address);
   long one = EEPROM.read(address + 1);
-
   return ((two << 0) & 0xFFFFFF) + ((one << 8) & 0xFFFFFFFF);
 }
